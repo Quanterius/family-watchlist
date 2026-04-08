@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎬 Family Watchlist</title>
   <style>
-    /* ── Reset & tokens ─────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -34,7 +33,6 @@
       padding: 0 0 80px;
     }
 
-    /* ── Header ─────────────────────────────────── */
     header {
       background: linear-gradient(135deg, #1a1a28 0%, #12121e 100%);
       border-bottom: 1px solid var(--border);
@@ -48,16 +46,9 @@
       gap: 12px;
     }
 
-    .header-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: var(--text);
-    }
-
+    .header-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); }
     .header-title span { color: var(--accent2); }
 
-    /* ── Filter bars ─────────────────────────────── */
     .filter-bar {
       padding: 10px 16px;
       display: flex;
@@ -124,19 +115,12 @@
       color: var(--green);
     }
 
-    .filter-chip.exclude-chip.active {
-      background: rgba(224,92,92,0.2);
-      border-color: var(--red);
-      color: var(--red);
-    }
-
     .filter-chip.short-chip.active {
       background: rgba(245,197,66,0.2);
       border-color: var(--gold);
       color: var(--gold);
     }
 
-    /* ── Section labels ──────────────────────────── */
     .section-label {
       padding: 20px 16px 10px;
       font-size: 11px;
@@ -146,7 +130,6 @@
       color: var(--muted);
     }
 
-    /* ── Currently Watching strip ────────────────── */
     #currently-watching-section {
       padding: 0 16px 16px;
       display: flex;
@@ -157,7 +140,6 @@
 
     #currently-watching-section::-webkit-scrollbar { display: none; }
 
-    /* ── Card grid ───────────────────────────────── */
     #watchlist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -177,7 +159,6 @@
       .btn-vote, .btn-icon { font-size: 11px; padding: 4px 6px; }
     }
 
-    /* ── Movie card ──────────────────────────────── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -222,31 +203,14 @@
       margin-bottom: 6px;
     }
 
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
 
-    .badge {
-      padding: 2px 7px;
-      border-radius: 10px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
+    .badge { padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+    .badge-type   { background: rgba(124,111,205,0.25); color: var(--accent2); }
+    .badge-stream { background: rgba(76,175,130,0.2);   color: var(--green); }
+    .badge-rating { background: rgba(245,197,66,0.2);   color: var(--gold); }
 
-    .badge-type     { background: rgba(124,111,205,0.25); color: var(--accent2); }
-    .badge-stream   { background: rgba(76,175,130,0.2);   color: var(--green); }
-    .badge-rating   { background: rgba(245,197,66,0.2);   color: var(--gold); }
-    .badge-watching { background: rgba(229,92,92,0.2);    color: var(--red); }
-
-    .card-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
+    .card-actions { display: flex; gap: 6px; align-items: center; }
 
     .btn-vote {
       flex: 1;
@@ -275,7 +239,6 @@
 
     .btn-icon:hover { background: var(--surface2); color: var(--red); }
 
-    /* Start watching button */
     .btn-start-watching {
       width: 100%;
       margin-top: 6px;
@@ -292,7 +255,6 @@
 
     .btn-start-watching:hover { background: rgba(76,175,130,0.2); }
 
-    /* Currently watching card */
     .card-watching {
       flex-shrink: 0;
       width: 140px;
@@ -312,11 +274,7 @@
     .card-watching .card-body { padding: 8px; }
     .card-watching .card-title { font-size: 12px; -webkit-line-clamp: 1; }
 
-    .watching-actions {
-      display: flex;
-      gap: 4px;
-      margin-top: 6px;
-    }
+    .watching-actions { display: flex; gap: 4px; margin-top: 6px; }
 
     .btn-done {
       flex: 1;
@@ -346,7 +304,6 @@
 
     .btn-move-back:hover { background: var(--surface2); color: var(--text); }
 
-    /* ── FAB ─────────────────────────────────────── */
     #fab {
       position: fixed;
       bottom: 24px;
@@ -370,7 +327,6 @@
     #fab:hover { transform: scale(1.08); }
     #fab:active { transform: scale(0.95); }
 
-    /* ── Modal overlay ───────────────────────────── */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -401,13 +357,7 @@
 
     .modal-overlay.open .modal { transform: translateY(0); }
 
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .modal-title { font-size: 16px; font-weight: 700; }
 
     .btn-close {
@@ -421,7 +371,6 @@
       display: flex; align-items: center; justify-content: center;
     }
 
-    /* ── TMDB search ─────────────────────────────── */
     .search-wrap { position: relative; margin-bottom: 16px; }
 
     .search-input {
@@ -469,27 +418,13 @@
     .search-result-item:last-child { border-bottom: none; }
     .search-result-item:hover { background: rgba(124,111,205,0.12); }
 
-    .result-thumb {
-      width: 36px; height: 54px;
-      border-radius: 4px; object-fit: cover;
-      flex-shrink: 0; background: var(--surface);
-    }
-
-    .result-thumb-placeholder {
-      width: 36px; height: 54px;
-      border-radius: 4px; background: var(--surface);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
+    .result-thumb { width: 36px; height: 54px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: var(--surface); }
+    .result-thumb-placeholder { width: 36px; height: 54px; border-radius: 4px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 
     .result-info { flex: 1; min-width: 0; }
     .result-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
     .result-year  { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .result-desc  {
-      font-size: 11px; color: var(--muted); line-height: 1.3;
-      display: -webkit-box; -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical; overflow: hidden;
-    }
+    .result-desc  { font-size: 11px; color: var(--muted); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     .autofill-preview {
       background: var(--surface2);
@@ -503,136 +438,46 @@
 
     .autofill-preview.visible { display: flex; }
 
-    .preview-poster {
-      width: 56px; height: 84px;
-      border-radius: 6px; object-fit: cover; flex-shrink: 0;
-    }
-
-    .preview-poster-placeholder {
-      width: 56px; height: 84px;
-      border-radius: 6px; background: var(--surface);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
-    }
+    .preview-poster { width: 56px; height: 84px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+    .preview-poster-placeholder { width: 56px; height: 84px; border-radius: 6px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
 
     .preview-info { flex: 1; }
     .preview-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
     .preview-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
     .preview-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
 
-    .clear-selection {
-      background: none; border: none; color: var(--muted); font-size: 11px;
-      cursor: pointer; text-decoration: underline; padding: 4px 0; display: block;
-    }
+    .clear-selection { background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 4px 0; display: block; }
 
-    /* ── Form fields ─────────────────────────────── */
     .form-group { margin-bottom: 14px; }
 
-    .form-label {
-      display: block;
-      font-size: 12px; font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.6px;
-      margin-bottom: 6px;
-    }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
 
-    .form-control {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: var(--surface2);
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
+    .form-control { width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-size: 14px; outline: none; transition: border-color 0.15s; }
     .form-control:focus { border-color: var(--accent); }
     select.form-control option { background: #1a1a22; }
 
     .mood-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 
-    .mood-chip {
-      padding: 5px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.12s;
-    }
-
+    .mood-chip { padding: 5px 12px; border-radius: 14px; border: 1px solid var(--border2); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.12s; }
     .mood-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     .whom-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 
-    .whom-chip {
-      padding: 5px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.12s;
-    }
+    .whom-chip { padding: 5px 12px; border-radius: 14px; border: 1px solid var(--border2); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.12s; }
+    .whom-chip.selected { background: rgba(76,175,130,0.25); border-color: var(--green); color: var(--green); }
 
-    .whom-chip.selected {
-      background: rgba(76,175,130,0.25);
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 14px;
-      border-radius: var(--radius-sm);
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-size: 15px; font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.15s;
-      margin-top: 8px;
-    }
-
+    .btn-submit { width: 100%; padding: 14px; border-radius: var(--radius-sm); border: none; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; margin-top: 8px; }
     .btn-submit:hover { opacity: 0.9; }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ── Loading / empty ──────────────────────────── */
-    .spinner {
-      width: 32px; height: 32px;
-      border: 3px solid var(--border2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      margin: 40px auto;
-    }
-
+    .spinner { width: 32px; height: 32px; border: 3px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 40px auto; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .empty-state { text-align: center; padding: 48px 20px; color: var(--muted); }
     .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
     .empty-state-text { font-size: 14px; }
 
-    .toast {
-      position: fixed;
-      bottom: 96px;
-      left: 50%; transform: translateX(-50%);
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      border-radius: 20px;
-      padding: 10px 20px;
-      font-size: 13px;
-      z-index: 400;
-      opacity: 0;
-      transition: opacity 0.2s;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
+    .toast { position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 10px 20px; font-size: 13px; z-index: 400; opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap; }
     .toast.show { opacity: 1; }
 
     @media (min-width: 600px) {
@@ -644,12 +489,11 @@
 </head>
 <body>
 
-<!-- ── Header ──────────────────────────────────────── -->
 <header>
   <div class="header-title">🎬 <span>Family</span> Watchlist</div>
 </header>
 
-<!-- ── Filter row 1: type / streaming ──────────────── -->
+<!-- Filter row 1 -->
 <div class="filter-bar">
   <button class="filter-chip active" onclick="setFilter(this,'all')">All</button>
   <button class="filter-chip"        onclick="setFilter(this,'watching')">👀 Watching</button>
@@ -658,7 +502,7 @@
   <span id="stream-filters"></span>
 </div>
 
-<!-- ── Filter row 2: mood / who / short ────────────── -->
+<!-- Filter row 2 -->
 <div class="filter-bar-2">
   <span class="filter-bar-2-label">Mood</span>
   <span id="mood-filters"></span>
@@ -669,22 +513,21 @@
   <button class="filter-chip short-chip" id="short-chip" onclick="toggleShort(this)">⏱ Under 60 min</button>
 </div>
 
-<!-- ── Currently Watching ──────────────────────────── -->
+<!-- Currently Watching -->
 <div id="currently-watching-wrap" style="display:none">
   <div class="section-label">👀 Currently Watching</div>
   <div id="currently-watching-section"></div>
 </div>
 
-<!-- ── Want to Watch ───────────────────────────────── -->
+<!-- Want to Watch -->
 <div class="section-label">📋 Want to Watch</div>
 <div id="watchlist-grid">
   <div class="spinner"></div>
 </div>
 
-<!-- ── FAB ─────────────────────────────────────────── -->
 <button id="fab" onclick="openModal()" aria-label="Add item">+</button>
 
-<!-- ── Add Modal ───────────────────────────────────── -->
+<!-- Add Modal -->
 <div id="modal-overlay" class="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal" id="modal">
     <div class="modal-header">
@@ -739,47 +582,34 @@
   </div>
 </div>
 
-<!-- ── Toast ───────────────────────────────────────── -->
 <div id="toast" class="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh7aLZiMxgNYYcbLEW6xXAYY-muv3_c5P0eUbOQkbmhVI6QKPVC4uqtDyXf_2CuwdO/exec';
 
 const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDlhMjI0ODZmYzllMDFmZjYxZGM3NmE5ZDJlNjg0ZCIsIm5iZiI6MTc3NTY4NTI1Ni40ODk5OTk4LCJzdWIiOiI2OWQ2Y2U4ODEzYTkzNGRiNThhMDA0ZWYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.uAdlnaolIkng5I3LfsU_7OSdsKrt3ZLMyVu7IEv4TmI';
 
 const FAMILY_MEMBERS = ['Whole Family', 'Matt', 'Lisa', 'Joel', 'Adam', 'Parents'];
 
-const MOOD_TAGS = ['Funny', 'Chill', 'Intense', 'Romantic', 'Scary',
-                   'Inspiring', 'Feel-good', 'Action', 'Educational', 'Short'];
+// UPDATED mood tags
+const MOOD_TAGS = ['Reality', 'Comedy', 'Drama', 'Horror', 'Documentary', 'True Story'];
 
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-let allItems      = [];
-let activeFilter  = 'all';   // row-1 filter
-let activeMood    = null;    // row-2 mood filter
-let activeWho     = null;    // row-2 who filter: name or 'exclude:Name'
-let shortOnly     = false;   // row-2 under-60-min filter
-let selectedMoods = [];      // modal form
+let allItems     = [];
+let activeFilter = 'all';
+let activeMood   = null;
+let activeWho    = null;
+let shortOnly    = false;
+let selectedMoods = [];
 let selectedWhom  = ['Whole Family'];
 let tmdbSelected  = null;
 let searchTimer   = null;
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   buildMoodChips();
   buildWhomChips();
   loadItems();
 });
 
-// ═══════════════════════════════════════════════════════
-// TMDB HELPERS
-// ═══════════════════════════════════════════════════════
 const TMDB_BASE  = 'https://api.themoviedb.org/3';
 const TMDB_IMG   = 'https://image.tmdb.org/t/p/';
 const TMDB_HEADS = { Authorization: `Bearer ${TMDB_TOKEN}`, 'Content-Type': 'application/json' };
@@ -817,9 +647,6 @@ async function tmdbDetails(id, mediaType) {
   return { streaming, genre, rating, runtime, details: det };
 }
 
-// ═══════════════════════════════════════════════════════
-// SEARCH UI
-// ═══════════════════════════════════════════════════════
 function onSearchInput(val) {
   clearTimeout(searchTimer);
   if (!val.trim()) { hideSearchResults(); return; }
@@ -902,9 +729,6 @@ function hideSearchResults() {
   box.innerHTML = '';
 }
 
-// ═══════════════════════════════════════════════════════
-// MOOD & WHOM CHIPS (modal form)
-// ═══════════════════════════════════════════════════════
 function buildMoodChips() {
   document.getElementById('mood-chips').innerHTML = MOOD_TAGS.map(m =>
     `<button class="mood-chip" onclick="toggleMood(this,'${m}')">${m}</button>`
@@ -946,11 +770,7 @@ function toggleWhom(el, name) {
   }
 }
 
-// ═══════════════════════════════════════════════════════
-// PHASE 3 — FILTER ROW 2
-// ═══════════════════════════════════════════════════════
-
-// Only show mood tags that are actually used in the current data
+// Filter row 2 — mood tags that exist in the data
 function buildMoodFilterChips() {
   const used = new Set();
   allItems.forEach(item =>
@@ -962,14 +782,13 @@ function buildMoodFilterChips() {
   ).join('');
 }
 
+// UPDATED: simple name-only who filter chips, no exclude option
 function buildWhoFilterChips() {
   const names = FAMILY_MEMBERS.filter(m => m !== 'Whole Family');
-  document.getElementById('who-filters').innerHTML = names.flatMap(name => [
+  document.getElementById('who-filters').innerHTML = names.map(name =>
     `<button class="filter-chip who-chip-filter${activeWho === name ? ' active' : ''}"
-             onclick="toggleWhoFilter('${name}')">${name}</button>`,
-    `<button class="filter-chip exclude-chip${activeWho === 'exclude:' + name ? ' active' : ''}"
-             onclick="toggleWhoFilter('exclude:${name}')" title="Hide ${name}'s picks">Not ${name}</button>`,
-  ]).join('');
+             onclick="toggleWhoFilter('${name}')">${name}</button>`
+  ).join('');
 }
 
 function toggleMoodFilter(mood) {
@@ -990,16 +809,12 @@ function toggleShort(el) {
   renderWatchlist();
 }
 
-// Parse "104 min" → 104; anything without "min" returns null (TV seasons etc.)
 function runtimeMinutes(runtimeStr) {
   if (!runtimeStr) return null;
   const m = runtimeStr.match(/^(\d+)\s*min/i);
   return m ? parseInt(m[1], 10) : null;
 }
 
-// ═══════════════════════════════════════════════════════
-// SUBMIT
-// ═══════════════════════════════════════════════════════
 async function submitItem() {
   const title = tmdbSelected
     ? tmdbSelected.title
@@ -1039,9 +854,6 @@ async function submitItem() {
   }
 }
 
-// ═══════════════════════════════════════════════════════
-// LOAD & RENDER
-// ═══════════════════════════════════════════════════════
 async function loadItems() {
   try {
     const res  = await fetch(`${APPS_SCRIPT_URL}?action=getItems`);
@@ -1091,7 +903,6 @@ function renderWatchlist() {
   const grid = document.getElementById('watchlist-grid');
   let items  = allItems.filter(i => i.Status === 'Want to Watch');
 
-  // Row 1: type / streaming
   if (activeFilter === 'movie')    items = items.filter(i => i.Type === 'Movie');
   if (activeFilter === 'tv')       items = items.filter(i => i.Type === 'TV Show');
   if (activeFilter === 'watching') items = allItems.filter(i => i.Status === 'Currently Watching');
@@ -1099,30 +910,19 @@ function renderWatchlist() {
     items = items.filter(i => (i.StreamingService || '').toLowerCase().includes(activeFilter.toLowerCase()));
   }
 
-  // Row 2: mood
   if (activeMood) {
     items = items.filter(i =>
       (i.MoodTags || '').split(',').map(t => t.trim()).includes(activeMood)
     );
   }
 
-  // Row 2: who
   if (activeWho) {
-    if (activeWho.startsWith('exclude:')) {
-      const excludeName = activeWho.replace('exclude:', '');
-      items = items.filter(i => {
-        const forWho = (i.ForWho || '').split(',').map(w => w.trim());
-        return !forWho.includes(excludeName);
-      });
-    } else {
-      items = items.filter(i => {
-        const forWho = (i.ForWho || '').split(',').map(w => w.trim());
-        return forWho.includes(activeWho) || forWho.includes('Whole Family');
-      });
-    }
+    items = items.filter(i => {
+      const forWho = (i.ForWho || '').split(',').map(w => w.trim());
+      return forWho.includes(activeWho) || forWho.includes('Whole Family');
+    });
   }
 
-  // Row 2: under 60 min
   if (shortOnly) {
     items = items.filter(i => {
       const mins = runtimeMinutes(i.Runtime);
@@ -1175,9 +975,6 @@ function buildStreamFilters() {
   ).join('');
 }
 
-// ═══════════════════════════════════════════════════════
-// ACTIONS
-// ═══════════════════════════════════════════════════════
 async function vote(id, btn) {
   btn.disabled = true;
   try {
@@ -1211,7 +1008,6 @@ async function updateStatus(id, newStatus) {
   } catch (_) { showToast('❌ Could not update status'); }
 }
 
-// PHASE 3 actions
 async function startWatching(id) {
   await updateStatus(id, 'Currently Watching');
   showToast('▶ Added to Currently Watching');
@@ -1228,16 +1024,12 @@ async function moveToWantToWatch(id) {
 }
 
 function setFilter(el, filter) {
-  // Deactivate all row-1 chips
   document.querySelectorAll('.filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   activeFilter = filter;
   renderWatchlist();
 }
 
-// ═══════════════════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════════════════
 function openModal() {
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('tmdb-search').focus();
@@ -1266,9 +1058,6 @@ function resetForm() {
   buildWhomChips();
 }
 
-// ═══════════════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════════════
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
