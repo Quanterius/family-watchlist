@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Family Watchlist</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: Georgia, serif;
+      background: #0f0f0f;
+      color: #f0ece4;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: #f5c518; /* IMDb gold */
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+
+    .add-btn {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+      padding: 0.85rem;
+      background: #f5c518;
+      color: #0f0f0f;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #1c1c1c;
+      border: 1px solid #333;
+      padding: 1.5rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 440px;
+    }
+    .modal h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+    .modal label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 0.25rem; }
+    .modal input, .modal select {
+      width: 100%;
+      padding: 0.6rem;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #f0ece4;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .modal-buttons { display: flex; gap: 0.75rem; }
+    .modal-buttons button {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .btn-save { background: #f5c518; color: #0f0f0f; font-weight: bold; }
+    .btn-cancel { background: #333; color: #f0ece4; }
+
+    /* Items */
+    .section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+
+    .item-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+
+    .item-card {
+      background: #1c1c1c;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .item-card.watching { border-left: 3px solid #f5c518; }
+
+    .item-title { font-size: 1rem; font-weight: bold; }
+    .item-meta { font-size: 0.78rem; color: #888; margin-top: 0.2rem; }
+
+    .item-actions { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-end; }
+    .item-actions button {
+      font-size: 0.72rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #ccc;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .item-actions button:hover { background: #2a2a2a; }
+    .vote-btn { display: flex; align-items: center; gap: 0.3rem; }
+
+    .empty { text-align: center; color: #555; font-size: 0.9rem; padding: 2rem 0; }
+
+    .status-msg {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎬 Family Watchlist</h1>
+  <p>The family's running list</p>
+</header>
+
+<button class="add-btn" onclick="openModal()">+ Add Something</button>
+
+<!-- Add Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2>Add to Watchlist</h2>
+    <label>Title *</label>
+    <input type="text" id="inputTitle" placeholder="e.g. The Bear" />
+    <label>Type</label>
+    <select id="inputType">
+      <option value="">— select —</option>
+      <option value="Movie">Movie</option>
+      <option value="TV Show">TV Show</option>
+    </select>
+    <label>Status</label>
+    <select id="inputStatus">
+      <option value="Want to Watch">Want to Watch</option>
+      <option value="Currently Watching">Currently Watching</option>
+    </select>
+    <div class="modal-buttons">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveItem()">Add</button>
+    </div>
+  </div>
+</div>
+
+<div id="currentlyWatching">
+  <p class="section-title">▶ Currently Watching</p>
+  <div class="item-list" id="watchingList"></div>
+</div>
+
+<p class="section-title">📋 Want to Watch</p>
+<div class="item-list" id="wantList"></div>
+
+<p class="status-msg" id="statusMsg"></p>
+
+<script>
+  const API = "https://script.google.com/macros/s/AKfycbwh7aLZiMxgNYYcbLEW6xXAYY-muv3_c5P0eUbOQkbmhVI6QKPVC4uqtDyXf_2CuwdO/exec";
+
+  async function apiCall(params) {
+    const res = await fetch(API, {
+      method: "POST",
+      body: JSON.stringify(params),
+      redirect: "follow"
+    });
+    return res.json();
+  }
+
+  async function loadItems() {
+    setStatus("Loading...");
+    const res = await fetch(API + "?action=getItems", { redirect: "follow" });
+    const data = await res.json();
+    renderItems(data.items || []);
+    setStatus("");
+  }
+
+  function renderItems(items) {
+    const watching = items.filter(i => i.Status === "Currently Watching");
+    const want = items.filter(i => i.Status === "Want to Watch");
+
+    document.getElementById("watchingList").innerHTML = watching.length
+      ? watching.map(cardHTML).join("")
+      : '<p class="empty">Nothing currently watching.</p>';
+
+    document.getElementById("wantList").innerHTML = want.length
+      ? want.map(cardHTML).join("")
+      : '<p class="empty">Nothing on the list yet — add something!</p>';
+  }
+
+  function cardHTML(item) {
+    const isWatching = item.Status === "Currently Watching";
+    return `
+      <div class="item-card ${isWatching ? "watching" : ""}">
+        <div>
+          <div class="item-title">${item.Title}</div>
+          <div class="item-meta">${[item.Type, item.Genre].filter(Boolean).join(" · ") || "No details yet"}</div>
+        </div>
+        <div class="item-actions">
+          <button class="vote-btn" onclick="vote('${item.ID}', this)">👍 ${item.Votes || 0}</button>
+          ${isWatching
+            ? `<button onclick="updateStatus('${item.ID}', 'Want to Watch')">↩ Move to List</button>`
+            : `<button onclick="updateStatus('${item.ID}', 'Currently Watching')">▶ Watch Now</button>`
+          }
+          <button onclick="deleteItem('${item.ID}')">🗑 Remove</button>
+        </div>
+      </div>`;
+  }
+
+  async function saveItem() {
+    const title = document.getElementById("inputTitle").value.trim();
+    if (!title) { alert("Title is required!"); return; }
+    setStatus("Saving...");
+    await apiCall({
+      action: "addItem",
+      title,
+      type: document.getElementById("inputType").value,
+      status: document.getElementById("inputStatus").value
+    });
+    closeModal();
+    loadItems();
+  }
+
+  async function vote(id, btn) {
+    const data = await apiCall({ action: "vote", id });
+    if (data.success) btn.textContent = `👍 ${data.votes}`;
+  }
+
+  async function updateStatus(id, status) {
+    setStatus("Updating...");
+    await apiCall({ action: "updateStatus", id, status });
+    loadItems();
+  }
+
+  async function deleteItem(id) {
+    if (!confirm("Remove this from the list?")) return;
+    setStatus("Removing...");
+    await apiCall({ action: "deleteItem", id });
+    loadItems();
+  }
+
+  function openModal() {
+    document.getElementById("modalOverlay").classList.add("open");
+    document.getElementById("inputTitle").focus();
+  }
+
+  function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+    document.getElementById("inputTitle").value = "";
+  }
+
+  function setStatus(msg) {
+    document.getElementById("statusMsg").textContent = msg;
+  }
+
+  // Close modal on overlay click
+  document.getElementById("modalOverlay").addEventListener("click", e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  loadItems();
+</script>
+</body>
+</html>
