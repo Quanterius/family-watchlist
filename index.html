@@ -118,6 +118,19 @@
       padding: 0 16px;
     }
 
+    /* FIX: smaller posters on mobile */
+    @media (max-width: 480px) {
+      #watchlist-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+        padding: 0 10px;
+      }
+      .card-body { padding: 7px 7px 6px; }
+      .card-title { font-size: 11px; }
+      .card-actions { gap: 4px; }
+      .btn-vote, .btn-icon { font-size: 11px; padding: 4px 6px; }
+    }
+
     /* ── Movie card ──────────────────────────────── */
     .card {
       background: var(--surface);
@@ -691,14 +704,14 @@
 
 <script>
 // ═══════════════════════════════════════════════════════
-// CONFIG — update these for your setup
+// CONFIG
 // ═══════════════════════════════════════════════════════
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh7aLZiMxgNYYcbLEW6xXAYY-muv3_c5P0eUbOQkbmhVI6QKPVC4uqtDyXf_2CuwdO/exec'; // ← paste your deployed URL
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh7aLZiMxgNYYcbLEW6xXAYY-muv3_c5P0eUbOQkbmhVI6QKPVC4uqtDyXf_2CuwdO/exec';
 
-// TMDB: put your Bearer token here (from themoviedb.org/settings/api)
-const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDlhMjI0ODZmYzllMDFmZjYxZGM3NmE5ZDJlNjg0ZCIsIm5iZiI6MTc3NTY4NTI1Ni40ODk5OTk4LCJzdWIiOiI2OWQ2Y2U4ODEzYTkzNGRiNThhMDA0ZWYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.uAdlnaolIkng5I3LfsU_7OSdsKrt3ZLMyVu7IEv4TmI'; // ← paste Bearer token
+const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDlhMjI0ODZmYzllMDFmZjYxZGM3NmE5ZDJlNjg0ZCIsIm5iZiI6MTc3NTY4NTI1Ni40ODk5OTk4LCJzdWIiOiI2OWQ2Y2U4ODEzYTkzNGRiNThhMDA0ZWYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.uAdlnaolIkng5I3LfsU_7OSdsKrt3ZLMyVu7IEv4TmI';
 
-const FAMILY_MEMBERS = ['Whole Family', 'Dad', 'Mom', 'Son', 'Daughter']; // ← edit names
+// FIX: updated family member names
+const FAMILY_MEMBERS = ['Whole Family', 'Matt', 'Lisa', 'Joel', 'Adam', 'Parents'];
 
 const MOOD_TAGS = ['Funny', 'Chill', 'Intense', 'Romantic', 'Scary',
                    'Inspiring', 'Feel-good', 'Action', 'Educational', 'Short'];
@@ -706,11 +719,11 @@ const MOOD_TAGS = ['Funny', 'Chill', 'Intense', 'Romantic', 'Scary',
 // ═══════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════
-let allItems    = [];
+let allItems     = [];
 let activeFilter = 'all';
 let selectedMoods = [];
 let selectedWhom  = ['Whole Family'];
-let tmdbSelected  = null; // the chosen TMDB result with full details
+let tmdbSelected  = null;
 let searchTimer   = null;
 
 // ═══════════════════════════════════════════════════════
@@ -725,9 +738,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ═══════════════════════════════════════════════════════
 // TMDB HELPERS
 // ═══════════════════════════════════════════════════════
-const TMDB_BASE   = 'https://api.themoviedb.org/3';
-const TMDB_IMG    = 'https://image.tmdb.org/t/p/';
-const TMDB_HEADS  = { Authorization: `Bearer ${TMDB_TOKEN}`, 'Content-Type': 'application/json' };
+const TMDB_BASE  = 'https://api.themoviedb.org/3';
+const TMDB_IMG   = 'https://image.tmdb.org/t/p/';
+const TMDB_HEADS = { Authorization: `Bearer ${TMDB_TOKEN}`, 'Content-Type': 'application/json' };
 
 async function tmdbSearch(query) {
   if (!query.trim()) return [];
@@ -738,7 +751,6 @@ async function tmdbSearch(query) {
 }
 
 async function tmdbDetails(id, mediaType) {
-  // Fetch details + watch providers in one Promise.all
   const [detRes, provRes] = await Promise.all([
     fetch(`${TMDB_BASE}/${mediaType}/${id}?language=en-US`, { headers: TMDB_HEADS }),
     fetch(`${TMDB_BASE}/${mediaType}/${id}/watch/providers`, { headers: TMDB_HEADS }),
@@ -747,17 +759,11 @@ async function tmdbDetails(id, mediaType) {
   const det  = detRes.ok  ? await detRes.json()  : {};
   const prov = provRes.ok ? await provRes.json() : {};
 
-  // Streaming providers for US (flatrate = subscription)
   const usProviders = prov.results?.US?.flatrate || [];
   const streaming   = usProviders.map(p => p.provider_name).slice(0, 3).join(', ');
+  const genre       = (det.genres || []).map(g => g.name).slice(0, 2).join(', ');
+  const rating      = det.vote_average ? det.vote_average.toFixed(1) : '';
 
-  // Genre
-  const genre = (det.genres || []).map(g => g.name).slice(0, 2).join(', ');
-
-  // Rating (IMDB via TMDB vote_average)
-  const rating = det.vote_average ? det.vote_average.toFixed(1) : '';
-
-  // Runtime: movies have runtime (mins), TV has seasons/episodes
   let runtime = '';
   if (mediaType === 'movie' && det.runtime) {
     runtime = `${det.runtime} min`;
@@ -811,8 +817,7 @@ async function selectResult(id, mediaType) {
   hideSearchResults();
   document.getElementById('tmdb-search').value = '';
 
-  // Show loading state in preview
-  const preview = document.getElementById('autofill-preview');
+  const preview    = document.getElementById('autofill-preview');
   const posterWrap = document.getElementById('preview-poster-wrap');
   posterWrap.innerHTML = `<div class="preview-poster-placeholder" style="font-size:14px;color:var(--muted)">…</div>`;
   document.getElementById('preview-title').textContent = 'Loading…';
@@ -830,7 +835,6 @@ async function selectResult(id, mediaType) {
 
   tmdbSelected = { id, mediaType, title, posterUrl, streaming, genre, rating, runtime, desc };
 
-  // Render preview
   posterWrap.innerHTML = posterUrl
     ? `<img class="preview-poster" src="${posterUrl}" />`
     : `<div class="preview-poster-placeholder">🎬</div>`;
@@ -904,7 +908,7 @@ function toggleWhom(el, name) {
       c.classList.toggle('selected', c.textContent === 'Whole Family');
     });
   } else {
-    document.querySelector('.whom-chip').classList.remove('selected'); // Whole Family chip
+    document.querySelector('.whom-chip').classList.remove('selected');
   }
 }
 
@@ -923,17 +927,17 @@ async function submitItem() {
   btn.textContent = 'Adding…';
 
   const body = {
-    action:          'addItem',
-    title,
-    type:            tmdbSelected ? (tmdbSelected.mediaType === 'movie' ? 'Movie' : 'TV Show') : '',
-    status:          document.getElementById('field-status').value,
-    forWho:          selectedWhom.join(', '),
-    moodTags:        selectedMoods.join(', '),
-    poster:          tmdbSelected?.posterUrl  || '',
-    streamingServices: tmdbSelected?.streaming || '',
-    runtime:         tmdbSelected?.runtime    || '',
-    genre:           tmdbSelected?.genre      || '',
-    rating:          tmdbSelected?.rating     || '',
+    action:           'addItem',
+    Title:            title,
+    Type:             tmdbSelected ? (tmdbSelected.mediaType === 'movie' ? 'Movie' : 'TV Show') : '',
+    Status:           document.getElementById('field-status').value,
+    ForWho:           selectedWhom.join(', '),
+    MoodTags:         selectedMoods.join(', '),
+    Poster:           tmdbSelected?.posterUrl    || '',
+    StreamingService: tmdbSelected?.streaming    || '',
+    Runtime:          tmdbSelected?.runtime      || '',
+    Genre:            tmdbSelected?.genre        || '',
+    Rating:           tmdbSelected?.rating       || '',
   };
 
   try {
@@ -985,8 +989,8 @@ function renderCurrentlyWatching() {
 
   sec.innerHTML = items.map(item => {
     const poster = item.Poster
-      ? `<img src="${item.poster_url}" alt="${escHtml(item.title)}" loading="lazy" style="width:100%;height:90px;object-fit:cover;">`
-      : `<div class="card-poster-placeholder" style="height:90px">🎬</div>`;
+      ? `<img src="${item.Poster}" alt="${escHtml(item.Title)}" loading="lazy" style="width:100%;height:90px;object-fit:cover;">`
+      : `<div class="card-poster-placeholder" style="height:90px;aspect-ratio:unset">🎬</div>`;
     return `<div class="card-watching">
               ${poster}
               <div class="card-body">
@@ -1001,13 +1005,11 @@ function renderWatchlist() {
   const grid  = document.getElementById('watchlist-grid');
   let   items = allItems.filter(i => i.Status === 'Want to Watch');
 
-  // Apply active filter
-  if (activeFilter === 'movie')    items = items.filter(i => i.type === 'Movie');
-  if (activeFilter === 'tv')       items = items.filter(i => i.type === 'TV Show');
-  if (activeFilter === 'watching') items = allItems.filter(i => i.status === 'Currently Watching');
+  if (activeFilter === 'movie')    items = items.filter(i => i.Type === 'Movie');
+  if (activeFilter === 'tv')       items = items.filter(i => i.Type === 'TV Show');
+  if (activeFilter === 'watching') items = allItems.filter(i => i.Status === 'Currently Watching');
   if (!['all','movie','tv','watching'].includes(activeFilter)) {
-    // streaming service filter
-    items = items.filter(i => (i.streaming || '').toLowerCase().includes(activeFilter.toLowerCase()));
+    items = items.filter(i => (i.StreamingService || '').toLowerCase().includes(activeFilter.toLowerCase()));
   }
 
   if (!items.length) {
@@ -1026,7 +1028,7 @@ function cardHtml(item) {
   const streamBadges = (item.StreamingService || '').split(',').filter(Boolean).map(s =>
     `<span class="badge badge-stream">${s.trim()}</span>`).join('');
 
-  const typeBadge   = item.Type   ? `<span class="badge badge-type">${item.Type}</span>`     : '';
+  const typeBadge   = item.Type   ? `<span class="badge badge-type">${item.Type}</span>`          : '';
   const ratingBadge = item.Rating ? `<span class="badge badge-rating">⭐ ${item.Rating}</span>` : '';
 
   const meta    = [typeBadge, ratingBadge, streamBadges].filter(Boolean).join('');
@@ -1049,7 +1051,7 @@ function cardHtml(item) {
 function buildStreamFilters() {
   const services = new Set();
   allItems.forEach(item => {
-    (item.streaming || '').split(',').forEach(s => {
+    (item.StreamingService || '').split(',').forEach(s => {
       const t = s.trim();
       if (t) services.add(t);
     });
@@ -1067,7 +1069,11 @@ function buildStreamFilters() {
 async function vote(id, btn) {
   btn.disabled = true;
   try {
-    const res  = await fetch(`${APPS_SCRIPT_URL}?action=vote&id=${id}`);
+    const res  = await fetch(APPS_SCRIPT_URL, {
+      method:   'POST',
+      body:     JSON.stringify({ action: 'vote', ID: id }),
+      redirect: 'follow'
+    });
     const data = await res.json();
     if (data.votes !== undefined) {
       btn.textContent = `👍 ${data.votes}`;
@@ -1076,14 +1082,37 @@ async function vote(id, btn) {
   finally { btn.disabled = false; }
 }
 
+// FIX: use POST (not GET) and match ID field capitalisation
 async function deleteItem(id) {
   if (!confirm('Remove this from the list?')) return;
   try {
-    await fetch(`${APPS_SCRIPT_URL}?action=deleteItem&id=${id}`);
-    allItems = allItems.filter(i => i.id !== id);
+    const res  = await fetch(APPS_SCRIPT_URL, {
+      method:   'POST',
+      body:     JSON.stringify({ action: 'deleteItem', ID: id }),
+      redirect: 'follow'
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    // FIX: filter by i.ID (capital) to match the sheet data
+    allItems = allItems.filter(i => i.ID !== id);
     renderAll();
-    showToast('Removed');
+    showToast('🗑 Removed');
   } catch (_) { showToast('❌ Could not remove'); }
+}
+
+async function updateStatus(id, newStatus) {
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL, {
+      method:   'POST',
+      body:     JSON.stringify({ action: 'updateStatus', ID: id, Status: newStatus }),
+      redirect: 'follow'
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    const item = allItems.find(i => i.ID === id);
+    if (item) item.Status = newStatus;
+    renderAll();
+  } catch (_) { showToast('❌ Could not update'); }
 }
 
 function setFilter(el, filter) {
@@ -1111,12 +1140,12 @@ function handleOverlayClick(e) {
 }
 
 function resetForm() {
-  tmdbSelected = null;
+  tmdbSelected  = null;
   selectedMoods = [];
   selectedWhom  = ['Whole Family'];
-  document.getElementById('tmdb-search').value = '';
-  document.getElementById('manual-title').value = '';
-  document.getElementById('field-status').value = 'Want to Watch';
+  document.getElementById('tmdb-search').value   = '';
+  document.getElementById('manual-title').value  = '';
+  document.getElementById('field-status').value  = 'Want to Watch';
   document.getElementById('autofill-preview').classList.remove('visible');
   document.getElementById('manual-title-wrap').style.display = 'block';
   hideSearchResults();
