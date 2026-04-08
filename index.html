@@ -33,38 +33,27 @@
       padding: 0 0 80px;
     }
 
+    /* ── Header ── */
     header {
       background: linear-gradient(135deg, #1a1a28 0%, #12121e 100%);
       border-bottom: 1px solid var(--border);
-      padding: 18px 20px 16px;
+      padding: 16px 20px;
       position: sticky;
       top: 0;
       z-index: 100;
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 12px;
     }
 
     .header-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); }
     .header-title span { color: var(--accent2); }
 
+    /* ── Filter row 1: All / Watching / Movies / TV ── */
     .filter-bar {
-      padding: 10px 16px;
+      padding: 7px 12px;
       display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .filter-bar::-webkit-scrollbar { display: none; }
-
-    .filter-bar-2 {
-      padding: 8px 16px;
-      display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
       scrollbar-width: none;
       background: var(--surface);
@@ -72,26 +61,16 @@
       align-items: center;
     }
 
-    .filter-bar-2::-webkit-scrollbar { display: none; }
-
-    .filter-bar-2-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--muted);
-      flex-shrink: 0;
-      padding-right: 4px;
-    }
+    .filter-bar::-webkit-scrollbar { display: none; }
 
     .filter-chip {
       flex-shrink: 0;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
       border: 1px solid var(--border2);
       background: transparent;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
       transition: all 0.15s;
       white-space: nowrap;
@@ -103,43 +82,115 @@
       color: #fff;
     }
 
-    .filter-chip.mood-chip-filter.active {
-      background: rgba(124,111,205,0.35);
+    /* ── Filter row 2: Mood + Who dropdowns ── */
+    .filter-bar-2 {
+      padding: 7px 12px;
+      display: flex;
+      gap: 8px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .dropdown-wrap { position: relative; }
+
+    /* The pill button that opens/closes the dropdown */
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .dropdown-trigger .arrow { font-size: 9px; transition: transform 0.15s; }
+    .dropdown-trigger.open .arrow { transform: rotate(180deg); }
+
+    /* Lit up when something is selected inside */
+    .dropdown-trigger.has-value {
+      border-color: var(--accent);
+      color: var(--accent2);
+      background: rgba(124,111,205,0.15);
+    }
+
+    /* Who dropdown lit up green */
+    .dropdown-trigger.has-value.who-trigger {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(76,175,130,0.15);
+    }
+
+    /* The floating panel of options */
+    .dropdown-panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      padding: 8px;
+      z-index: 200;
+      min-width: 180px;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .dropdown-panel.open { display: flex; }
+
+    .dropdown-option {
+      padding: 5px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border2);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+
+    .dropdown-option:hover { background: var(--surface); color: var(--text); }
+
+    /* Mood active = purple */
+    .mood-option.active {
+      background: rgba(124,111,205,0.3);
       border-color: var(--accent2);
       color: var(--accent2);
     }
 
-    .filter-chip.who-chip-filter.active {
+    /* Who active = green */
+    .who-option.active {
       background: rgba(76,175,130,0.25);
       border-color: var(--green);
       color: var(--green);
     }
 
-    .filter-chip.short-chip.active {
-      background: rgba(245,197,66,0.2);
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
+    /* ── Section labels ── */
     .section-label {
       padding: 20px 16px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--muted);
     }
 
+    /* ── Currently Watching strip ── */
     #currently-watching-section {
       padding: 0 16px 16px;
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      display: flex; gap: 12px;
+      overflow-x: auto; scrollbar-width: none;
     }
-
     #currently-watching-section::-webkit-scrollbar { display: none; }
 
+    /* ── Card grid ── */
     #watchlist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -150,8 +201,7 @@
     @media (max-width: 480px) {
       #watchlist-grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 8px;
-        padding: 0 10px;
+        gap: 8px; padding: 0 10px;
       }
       .card-body { padding: 7px 7px 6px; }
       .card-title { font-size: 11px; }
@@ -159,53 +209,35 @@
       .btn-vote, .btn-icon { font-size: 11px; padding: 4px 6px; }
     }
 
+    /* ── Movie card ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      position: relative;
       transition: transform 0.15s, box-shadow 0.15s;
-      cursor: default;
     }
-
     .card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 
-    .card-poster {
-      width: 100%;
-      aspect-ratio: 2/3;
-      object-fit: cover;
-      display: block;
-      background: var(--surface2);
-    }
+    .card-poster { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; background: var(--surface2); }
 
     .card-poster-placeholder {
-      width: 100%;
-      aspect-ratio: 2/3;
-      background: var(--surface2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      color: var(--muted);
+      width: 100%; aspect-ratio: 2/3; background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; color: var(--muted);
     }
 
     .card-body { padding: 10px 10px 8px; }
 
     .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 6px;
+      font-size: 13px; font-weight: 600; line-height: 1.3;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; margin-bottom: 6px;
     }
 
     .card-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
 
-    .badge { padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+    .badge { padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; }
     .badge-type   { background: rgba(124,111,205,0.25); color: var(--accent2); }
     .badge-stream { background: rgba(76,175,130,0.2);   color: var(--green); }
     .badge-rating { background: rgba(245,197,66,0.2);   color: var(--gold); }
@@ -213,208 +245,116 @@
     .card-actions { display: flex; gap: 6px; align-items: center; }
 
     .btn-vote {
-      flex: 1;
-      padding: 5px 8px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
+      flex: 1; padding: 5px 8px;
+      border-radius: var(--radius-sm); border: 1px solid var(--border2);
+      background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.15s;
     }
-
     .btn-vote:hover { background: var(--surface2); color: var(--text); }
 
     .btn-icon {
       padding: 5px 7px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.15s;
     }
-
     .btn-icon:hover { background: var(--surface2); color: var(--red); }
 
     .btn-start-watching {
-      width: 100%;
-      margin-top: 6px;
-      padding: 5px 8px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(76,175,130,0.4);
-      background: rgba(76,175,130,0.1);
-      color: var(--green);
-      font-size: 11px;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
+      width: 100%; margin-top: 6px; padding: 5px 8px;
+      border-radius: var(--radius-sm); border: 1px solid rgba(76,175,130,0.4);
+      background: rgba(76,175,130,0.1); color: var(--green); font-size: 11px;
+      cursor: pointer; transition: all 0.15s; text-align: center;
     }
-
     .btn-start-watching:hover { background: rgba(76,175,130,0.2); }
 
+    /* ── Currently watching card ── */
     .card-watching {
-      flex-shrink: 0;
-      width: 140px;
-      background: var(--surface);
-      border: 1px solid rgba(229,92,92,0.3);
-      border-radius: var(--radius);
-      overflow: hidden;
+      flex-shrink: 0; width: 140px;
+      background: var(--surface); border: 1px solid rgba(229,92,92,0.3);
+      border-radius: var(--radius); overflow: hidden;
     }
-
     .card-watching img, .card-watching .card-poster-placeholder {
-      height: 90px;
-      width: 100%;
-      aspect-ratio: unset;
-      object-fit: cover;
+      height: 90px; width: 100%; aspect-ratio: unset; object-fit: cover;
     }
-
     .card-watching .card-body { padding: 8px; }
     .card-watching .card-title { font-size: 12px; -webkit-line-clamp: 1; }
 
     .watching-actions { display: flex; gap: 4px; margin-top: 6px; }
 
     .btn-done {
-      flex: 1;
-      padding: 4px 6px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(76,175,130,0.4);
-      background: rgba(76,175,130,0.1);
-      color: var(--green);
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
+      flex: 1; padding: 4px 6px;
+      border-radius: var(--radius-sm); border: 1px solid rgba(76,175,130,0.4);
+      background: rgba(76,175,130,0.1); color: var(--green); font-size: 10px;
+      cursor: pointer; transition: all 0.15s; text-align: center;
     }
-
     .btn-done:hover { background: rgba(76,175,130,0.25); }
 
     .btn-move-back {
       padding: 4px 6px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--muted);
-      font-size: 10px;
-      cursor: pointer;
-      transition: all 0.15s;
+      border-radius: var(--radius-sm); border: 1px solid var(--border2);
+      background: transparent; color: var(--muted); font-size: 10px; cursor: pointer; transition: all 0.15s;
     }
-
     .btn-move-back:hover { background: var(--surface2); color: var(--text); }
 
+    /* ── FAB ── */
     #fab {
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-size: 26px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(124,111,205,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      transition: transform 0.15s;
+      position: fixed; bottom: 24px; right: 20px;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent); color: #fff; font-size: 26px; border: none;
+      cursor: pointer; box-shadow: 0 4px 20px rgba(124,111,205,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; transition: transform 0.15s;
     }
-
     #fab:hover { transform: scale(1.08); }
     #fab:active { transform: scale(0.95); }
 
+    /* ── Modal ── */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 300;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      z-index: 300; display: flex; align-items: flex-end; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
-
     .modal-overlay.open { opacity: 1; pointer-events: all; }
 
     .modal {
-      background: var(--surface);
-      border-radius: var(--radius) var(--radius) 0 0;
-      border: 1px solid var(--border2);
-      width: 100%;
-      max-width: 520px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px 20px 40px;
-      transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      background: var(--surface); border-radius: var(--radius) var(--radius) 0 0;
+      border: 1px solid var(--border2); width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto; padding: 20px 20px 40px;
+      transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
     }
-
     .modal-overlay.open .modal { transform: translateY(0); }
 
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .modal-title { font-size: 16px; font-weight: 700; }
 
     .btn-close {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--muted);
-      font-size: 18px;
-      cursor: pointer;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border2); background: transparent;
+      color: var(--muted); font-size: 18px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
 
     .search-wrap { position: relative; margin-bottom: 16px; }
 
     .search-input {
-      width: 100%;
-      padding: 12px 16px 12px 42px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: var(--surface2);
-      color: var(--text);
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.15s;
+      width: 100%; padding: 12px 16px 12px 42px;
+      border-radius: var(--radius-sm); border: 1px solid var(--border2);
+      background: var(--surface2); color: var(--text); font-size: 15px;
+      outline: none; transition: border-color 0.15s;
     }
-
     .search-input:focus { border-color: var(--accent); }
     .search-input::placeholder { color: var(--muted); }
 
-    .search-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      pointer-events: none;
-    }
+    .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 16px; pointer-events: none; }
 
     .search-results {
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border2);
-      background: var(--surface2);
-      overflow: hidden;
-      margin-bottom: 16px;
-      display: none;
+      border-radius: var(--radius-sm); border: 1px solid var(--border2);
+      background: var(--surface2); overflow: hidden; margin-bottom: 16px; display: none;
     }
 
     .search-result-item {
-      display: flex;
-      gap: 12px;
-      padding: 10px 12px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.1s;
+      display: flex; gap: 12px; padding: 10px 12px; cursor: pointer;
+      border-bottom: 1px solid var(--border); transition: background 0.1s;
     }
-
     .search-result-item:last-child { border-bottom: none; }
     .search-result-item:hover { background: rgba(124,111,205,0.12); }
 
@@ -427,15 +367,9 @@
     .result-desc  { font-size: 11px; color: var(--muted); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
     .autofill-preview {
-      background: var(--surface2);
-      border: 1px solid rgba(124,111,205,0.3);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      margin-bottom: 16px;
-      display: none;
-      gap: 12px;
+      background: var(--surface2); border: 1px solid rgba(124,111,205,0.3);
+      border-radius: var(--radius-sm); padding: 12px; margin-bottom: 16px; display: none; gap: 12px;
     }
-
     .autofill-preview.visible { display: flex; }
 
     .preview-poster { width: 56px; height: 84px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
@@ -449,7 +383,6 @@
     .clear-selection { background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 4px 0; display: block; }
 
     .form-group { margin-bottom: 14px; }
-
     .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
 
     .form-control { width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--surface2); color: var(--text); font-size: 14px; outline: none; transition: border-color 0.15s; }
@@ -457,12 +390,10 @@
     select.form-control option { background: #1a1a22; }
 
     .mood-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-
     .mood-chip { padding: 5px 12px; border-radius: 14px; border: 1px solid var(--border2); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.12s; }
     .mood-chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     .whom-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-
     .whom-chip { padding: 5px 12px; border-radius: 14px; border: 1px solid var(--border2); background: transparent; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.12s; }
     .whom-chip.selected { background: rgba(76,175,130,0.25); border-color: var(--green); color: var(--green); }
 
@@ -493,24 +424,35 @@
   <div class="header-title">🎬 <span>Family</span> Watchlist</div>
 </header>
 
-<!-- Filter row 1 -->
+<!-- Filter row 1: type only (no streaming) -->
 <div class="filter-bar">
   <button class="filter-chip active" onclick="setFilter(this,'all')">All</button>
   <button class="filter-chip"        onclick="setFilter(this,'watching')">👀 Watching</button>
   <button class="filter-chip"        onclick="setFilter(this,'movie')">🎬 Movies</button>
   <button class="filter-chip"        onclick="setFilter(this,'tv')">📺 TV</button>
-  <span id="stream-filters"></span>
 </div>
 
-<!-- Filter row 2 -->
+<!-- Filter row 2: Mood + Who dropdowns -->
 <div class="filter-bar-2">
-  <span class="filter-bar-2-label">Mood</span>
-  <span id="mood-filters"></span>
-  <span style="width:1px;background:var(--border2);flex-shrink:0;margin:0 2px;align-self:stretch;"></span>
-  <span class="filter-bar-2-label">Who</span>
-  <span id="who-filters"></span>
-  <span style="width:1px;background:var(--border2);flex-shrink:0;margin:0 2px;align-self:stretch;"></span>
-  <button class="filter-chip short-chip" id="short-chip" onclick="toggleShort(this)">⏱ Under 60 min</button>
+
+  <!-- Mood dropdown -->
+  <div class="dropdown-wrap">
+    <button class="dropdown-trigger" id="mood-trigger" onclick="toggleDropdown('mood')">
+      <span id="mood-label">Mood</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="dropdown-panel" id="mood-panel"></div>
+  </div>
+
+  <!-- Who dropdown -->
+  <div class="dropdown-wrap">
+    <button class="dropdown-trigger who-trigger" id="who-trigger" onclick="toggleDropdown('who')">
+      <span id="who-label">Who</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="dropdown-panel" id="who-panel"></div>
+  </div>
+
 </div>
 
 <!-- Currently Watching -->
@@ -521,15 +463,13 @@
 
 <!-- Want to Watch -->
 <div class="section-label">📋 Want to Watch</div>
-<div id="watchlist-grid">
-  <div class="spinner"></div>
-</div>
+<div id="watchlist-grid"><div class="spinner"></div></div>
 
 <button id="fab" onclick="openModal()" aria-label="Add item">+</button>
 
 <!-- Add Modal -->
 <div id="modal-overlay" class="modal-overlay" onclick="handleOverlayClick(event)">
-  <div class="modal" id="modal">
+  <div class="modal">
     <div class="modal-header">
       <span class="modal-title">Add to Watchlist</span>
       <button class="btn-close" onclick="closeModal()">×</button>
@@ -539,8 +479,7 @@
       <span class="search-icon">🔍</span>
       <input id="tmdb-search" class="search-input" type="text"
              placeholder="Search movies & TV shows…"
-             autocomplete="off"
-             oninput="onSearchInput(this.value)" />
+             autocomplete="off" oninput="onSearchInput(this.value)" />
     </div>
 
     <div id="search-results" class="search-results"></div>
@@ -586,19 +525,15 @@
 
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh7aLZiMxgNYYcbLEW6xXAYY-muv3_c5P0eUbOQkbmhVI6QKPVC4uqtDyXf_2CuwdO/exec';
-
 const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NDlhMjI0ODZmYzllMDFmZjYxZGM3NmE5ZDJlNjg0ZCIsIm5iZiI6MTc3NTY4NTI1Ni40ODk5OTk4LCJzdWIiOiI2OWQ2Y2U4ODEzYTkzNGRiNThhMDA0ZWYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.uAdlnaolIkng5I3LfsU_7OSdsKrt3ZLMyVu7IEv4TmI';
 
 const FAMILY_MEMBERS = ['Whole Family', 'Matt', 'Lisa', 'Joel', 'Adam', 'Parents'];
+const MOOD_TAGS      = ['Reality', 'Comedy', 'Drama', 'Horror', 'Documentary', 'True Story'];
 
-// UPDATED mood tags
-const MOOD_TAGS = ['Reality', 'Comedy', 'Drama', 'Horror', 'Documentary', 'True Story'];
-
-let allItems     = [];
-let activeFilter = 'all';
-let activeMood   = null;
-let activeWho    = null;
-let shortOnly    = false;
+let allItems      = [];
+let activeFilter  = 'all';
+let activeMood    = null;
+let activeWho     = null;
 let selectedMoods = [];
 let selectedWhom  = ['Whole Family'];
 let tmdbSelected  = null;
@@ -607,9 +542,75 @@ let searchTimer   = null;
 document.addEventListener('DOMContentLoaded', () => {
   buildMoodChips();
   buildWhomChips();
+  buildMoodPanel();
+  buildWhoPanel();
   loadItems();
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.dropdown-wrap')) closeAllDropdowns();
+  });
 });
 
+// ── Dropdown logic ──────────────────────────────────────
+function toggleDropdown(which) {
+  const panel   = document.getElementById(which + '-panel');
+  const trigger = document.getElementById(which + '-trigger');
+  const isOpen  = panel.classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) {
+    panel.classList.add('open');
+    trigger.classList.add('open');
+  }
+}
+
+function closeAllDropdowns() {
+  ['mood', 'who'].forEach(w => {
+    document.getElementById(w + '-panel').classList.remove('open');
+    document.getElementById(w + '-trigger').classList.remove('open');
+  });
+}
+
+function buildMoodPanel() {
+  const panel = document.getElementById('mood-panel');
+  panel.innerHTML = MOOD_TAGS.map(mood =>
+    `<button class="dropdown-option mood-option${activeMood === mood ? ' active' : ''}"
+             onclick="selectMood('${mood}',event)">${mood}</button>`
+  ).join('');
+}
+
+function buildWhoPanel() {
+  const panel = document.getElementById('who-panel');
+  panel.innerHTML = FAMILY_MEMBERS.map(name =>
+    `<button class="dropdown-option who-option${activeWho === name ? ' active' : ''}"
+             onclick="selectWho('${name}',event)">${name}</button>`
+  ).join('');
+}
+
+function selectMood(mood, e) {
+  e.stopPropagation();
+  activeMood = activeMood === mood ? null : mood;
+  buildMoodPanel();
+  // Update trigger label and highlight
+  const trigger = document.getElementById('mood-trigger');
+  document.getElementById('mood-label').textContent = activeMood || 'Mood';
+  trigger.classList.toggle('has-value', !!activeMood);
+  closeAllDropdowns();
+  renderWatchlist();
+}
+
+function selectWho(name, e) {
+  e.stopPropagation();
+  activeWho = activeWho === name ? null : name;
+  buildWhoPanel();
+  // Update trigger label and highlight
+  const trigger = document.getElementById('who-trigger');
+  document.getElementById('who-label').textContent = activeWho || 'Who';
+  trigger.classList.toggle('has-value', !!activeWho);
+  closeAllDropdowns();
+  renderWatchlist();
+}
+
+// ── TMDB ────────────────────────────────────────────────
 const TMDB_BASE  = 'https://api.themoviedb.org/3';
 const TMDB_IMG   = 'https://image.tmdb.org/t/p/';
 const TMDB_HEADS = { Authorization: `Bearer ${TMDB_TOKEN}`, 'Content-Type': 'application/json' };
@@ -630,23 +631,22 @@ async function tmdbDetails(id, mediaType) {
   const det  = detRes.ok  ? await detRes.json()  : {};
   const prov = provRes.ok ? await provRes.json() : {};
 
-  const usProviders = prov.results?.US?.flatrate || [];
-  const streaming   = usProviders.map(p => p.provider_name).slice(0, 3).join(', ');
-  const genre       = (det.genres || []).map(g => g.name).slice(0, 2).join(', ');
-  const rating      = det.vote_average ? det.vote_average.toFixed(1) : '';
+  const streaming = (prov.results?.US?.flatrate || []).map(p => p.provider_name).slice(0, 3).join(', ');
+  const genre     = (det.genres || []).map(g => g.name).slice(0, 2).join(', ');
+  const rating    = det.vote_average ? det.vote_average.toFixed(1) : '';
 
   let runtime = '';
   if (mediaType === 'movie' && det.runtime) {
     runtime = `${det.runtime} min`;
   } else if (mediaType === 'tv') {
-    const s = det.number_of_seasons;
-    const e = det.number_of_episodes;
+    const s = det.number_of_seasons, e = det.number_of_episodes;
     runtime = s ? `${s} season${s > 1 ? 's' : ''}${e ? `, ${e} ep` : ''}` : '';
   }
 
   return { streaming, genre, rating, runtime, details: det };
 }
 
+// ── Search UI ───────────────────────────────────────────
 function onSearchInput(val) {
   clearTimeout(searchTimer);
   if (!val.trim()) { hideSearchResults(); return; }
@@ -659,7 +659,7 @@ async function doSearch(query) {
   box.style.display = 'block';
   const results = await tmdbSearch(query);
   if (!results.length) {
-    box.innerHTML = '<div style="padding:12px;text-align:center;color:var(--muted);font-size:13px">No results — you can add it manually below</div>';
+    box.innerHTML = '<div style="padding:12px;text-align:center;color:var(--muted);font-size:13px">No results — add manually below</div>';
     return;
   }
   box.innerHTML = results.map(r => {
@@ -668,13 +668,12 @@ async function doSearch(query) {
     const thumb = r.poster_path
       ? `<img class="result-thumb" src="${TMDB_IMG}w92${r.poster_path}" loading="lazy" />`
       : `<div class="result-thumb-placeholder">🎬</div>`;
-    const desc = (r.overview || '').slice(0, 100);
-    return `<div class="search-result-item" onclick="selectResult(${r.id}, '${r.media_type}')">
+    return `<div class="search-result-item" onclick="selectResult(${r.id},'${r.media_type}')">
               ${thumb}
               <div class="result-info">
                 <div class="result-title">${escHtml(title)}</div>
                 <div class="result-year">${year} · ${r.media_type === 'movie' ? '🎬 Movie' : '📺 TV'}</div>
-                <div class="result-desc">${escHtml(desc)}</div>
+                <div class="result-desc">${escHtml((r.overview || '').slice(0, 100))}</div>
               </div>
             </div>`;
   }).join('');
@@ -704,10 +703,9 @@ async function selectResult(id, mediaType) {
     : `<div class="preview-poster-placeholder">🎬</div>`;
   document.getElementById('preview-title').textContent = title;
 
-  const badges = [];
-  badges.push(mediaType === 'movie'
+  const badges = [mediaType === 'movie'
     ? '<span class="badge badge-type">🎬 Movie</span>'
-    : '<span class="badge badge-type">📺 TV</span>');
+    : '<span class="badge badge-type">📺 TV</span>'];
   if (rating)    badges.push(`<span class="badge badge-rating">⭐ ${rating}</span>`);
   if (runtime)   badges.push(`<span class="badge badge-stream">${runtime}</span>`);
   if (streaming) streaming.split(', ').forEach(s => badges.push(`<span class="badge badge-stream">${s}</span>`));
@@ -729,6 +727,7 @@ function hideSearchResults() {
   box.innerHTML = '';
 }
 
+// ── Modal form chips ─────────────────────────────────────
 function buildMoodChips() {
   document.getElementById('mood-chips').innerHTML = MOOD_TAGS.map(m =>
     `<button class="mood-chip" onclick="toggleMood(this,'${m}')">${m}</button>`
@@ -770,51 +769,7 @@ function toggleWhom(el, name) {
   }
 }
 
-// Filter row 2 — mood tags that exist in the data
-function buildMoodFilterChips() {
-  const used = new Set();
-  allItems.forEach(item =>
-    (item.MoodTags || '').split(',').forEach(t => { const v = t.trim(); if (v) used.add(v); })
-  );
-  document.getElementById('mood-filters').innerHTML = [...used].map(mood =>
-    `<button class="filter-chip mood-chip-filter${activeMood === mood ? ' active' : ''}"
-             onclick="toggleMoodFilter('${mood}')">${mood}</button>`
-  ).join('');
-}
-
-// UPDATED: simple name-only who filter chips, no exclude option
-function buildWhoFilterChips() {
-  const names = FAMILY_MEMBERS.filter(m => m !== 'Whole Family');
-  document.getElementById('who-filters').innerHTML = names.map(name =>
-    `<button class="filter-chip who-chip-filter${activeWho === name ? ' active' : ''}"
-             onclick="toggleWhoFilter('${name}')">${name}</button>`
-  ).join('');
-}
-
-function toggleMoodFilter(mood) {
-  activeMood = activeMood === mood ? null : mood;
-  buildMoodFilterChips();
-  renderWatchlist();
-}
-
-function toggleWhoFilter(key) {
-  activeWho = activeWho === key ? null : key;
-  buildWhoFilterChips();
-  renderWatchlist();
-}
-
-function toggleShort(el) {
-  shortOnly = !shortOnly;
-  el.classList.toggle('active', shortOnly);
-  renderWatchlist();
-}
-
-function runtimeMinutes(runtimeStr) {
-  if (!runtimeStr) return null;
-  const m = runtimeStr.match(/^(\d+)\s*min/i);
-  return m ? parseInt(m[1], 10) : null;
-}
-
+// ── Submit ───────────────────────────────────────────────
 async function submitItem() {
   const title = tmdbSelected
     ? tmdbSelected.title
@@ -854,15 +809,13 @@ async function submitItem() {
   }
 }
 
+// ── Load & render ────────────────────────────────────────
 async function loadItems() {
   try {
     const res  = await fetch(`${APPS_SCRIPT_URL}?action=getItems`);
     const data = await res.json();
     allItems = data.items || [];
     renderAll();
-    buildStreamFilters();
-    buildMoodFilterChips();
-    buildWhoFilterChips();
   } catch (e) {
     document.getElementById('watchlist-grid').innerHTML =
       `<div class="empty-state"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">Couldn't load the list</div></div>`;
@@ -880,7 +833,6 @@ function renderCurrentlyWatching() {
   const sec   = document.getElementById('currently-watching-section');
   if (!items.length) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-
   sec.innerHTML = items.map(item => {
     const poster = item.Poster
       ? `<img src="${item.Poster}" alt="${escHtml(item.Title)}" loading="lazy" style="width:100%;height:90px;object-fit:cover;">`
@@ -892,7 +844,7 @@ function renderCurrentlyWatching() {
                 <button class="btn-vote" onclick="vote('${item.ID}',this)">👍 ${item.Votes || 0}</button>
                 <div class="watching-actions">
                   <button class="btn-done"      onclick="markDone('${item.ID}')">✅ Done</button>
-                  <button class="btn-move-back" onclick="moveToWantToWatch('${item.ID}')" title="Move back to list">↩ Back</button>
+                  <button class="btn-move-back" onclick="moveToWantToWatch('${item.ID}')">↩ Back</button>
                 </div>
               </div>
             </div>`;
@@ -903,30 +855,24 @@ function renderWatchlist() {
   const grid = document.getElementById('watchlist-grid');
   let items  = allItems.filter(i => i.Status === 'Want to Watch');
 
+  // Row 1 filter
   if (activeFilter === 'movie')    items = items.filter(i => i.Type === 'Movie');
   if (activeFilter === 'tv')       items = items.filter(i => i.Type === 'TV Show');
   if (activeFilter === 'watching') items = allItems.filter(i => i.Status === 'Currently Watching');
-  if (!['all','movie','tv','watching'].includes(activeFilter)) {
-    items = items.filter(i => (i.StreamingService || '').toLowerCase().includes(activeFilter.toLowerCase()));
-  }
 
+  // Mood filter
   if (activeMood) {
     items = items.filter(i =>
       (i.MoodTags || '').split(',').map(t => t.trim()).includes(activeMood)
     );
   }
 
+  // Who filter — Whole Family matches everyone, individual name matches that person or Whole Family items
   if (activeWho) {
     items = items.filter(i => {
       const forWho = (i.ForWho || '').split(',').map(w => w.trim());
+      if (activeWho === 'Whole Family') return forWho.includes('Whole Family');
       return forWho.includes(activeWho) || forWho.includes('Whole Family');
-    });
-  }
-
-  if (shortOnly) {
-    items = items.filter(i => {
-      const mins = runtimeMinutes(i.Runtime);
-      return mins !== null && mins < 60;
     });
   }
 
@@ -965,16 +911,7 @@ function cardHtml(item) {
           </div>`;
 }
 
-function buildStreamFilters() {
-  const services = new Set();
-  allItems.forEach(item =>
-    (item.StreamingService || '').split(',').forEach(s => { const t = s.trim(); if (t) services.add(t); })
-  );
-  document.getElementById('stream-filters').innerHTML = [...services].slice(0, 6).map(s =>
-    `<button class="filter-chip" onclick="setFilter(this,'${s}')">${s}</button>`
-  ).join('');
-}
-
+// ── Actions ──────────────────────────────────────────────
 async function vote(id, btn) {
   btn.disabled = true;
   try {
@@ -1008,20 +945,9 @@ async function updateStatus(id, newStatus) {
   } catch (_) { showToast('❌ Could not update status'); }
 }
 
-async function startWatching(id) {
-  await updateStatus(id, 'Currently Watching');
-  showToast('▶ Added to Currently Watching');
-}
-
-async function markDone(id) {
-  await updateStatus(id, 'Done');
-  showToast('✅ Marked as done!');
-}
-
-async function moveToWantToWatch(id) {
-  await updateStatus(id, 'Want to Watch');
-  showToast('↩ Moved back to Want to Watch');
-}
+async function startWatching(id) { await updateStatus(id, 'Currently Watching'); showToast('▶ Added to Currently Watching'); }
+async function markDone(id)       { await updateStatus(id, 'Done');               showToast('✅ Marked as done!'); }
+async function moveToWantToWatch(id) { await updateStatus(id, 'Want to Watch');   showToast('↩ Moved back to Want to Watch'); }
 
 function setFilter(el, filter) {
   document.querySelectorAll('.filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
@@ -1030,6 +956,7 @@ function setFilter(el, filter) {
   renderWatchlist();
 }
 
+// ── Modal ────────────────────────────────────────────────
 function openModal() {
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('tmdb-search').focus();
@@ -1058,6 +985,7 @@ function resetForm() {
   buildWhomChips();
 }
 
+// ── Utils ────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
