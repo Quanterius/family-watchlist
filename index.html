@@ -976,7 +976,7 @@ function renderAll() {
 }
 
 function renderCurrentlyWatching() {
-  const items = allItems.filter(i => i.status === 'Currently Watching');
+  const items = allItems.filter(i => i.Status === 'Currently Watching');
   const wrap  = document.getElementById('currently-watching-wrap');
   const sec   = document.getElementById('currently-watching-section');
 
@@ -984,14 +984,14 @@ function renderCurrentlyWatching() {
   wrap.style.display = 'block';
 
   sec.innerHTML = items.map(item => {
-    const poster = item.poster_url
+    const poster = item.Poster
       ? `<img src="${item.poster_url}" alt="${escHtml(item.title)}" loading="lazy" style="width:100%;height:90px;object-fit:cover;">`
       : `<div class="card-poster-placeholder" style="height:90px">🎬</div>`;
     return `<div class="card-watching">
               ${poster}
               <div class="card-body">
-                <div class="card-title">${escHtml(item.title)}</div>
-                <button class="btn-vote" onclick="vote('${item.id}',this)">👍 ${item.votes}</button>
+                <div class="card-title">${escHtml(item.Title)}</div>
+                <button class="btn-vote" onclick="vote('${item.ID}',this)">👍 ${item.Votes || 0}</button>
               </div>
             </div>`;
   }).join('');
@@ -999,7 +999,7 @@ function renderCurrentlyWatching() {
 
 function renderWatchlist() {
   const grid  = document.getElementById('watchlist-grid');
-  let   items = allItems.filter(i => i.status === 'Want to Watch');
+  let   items = allItems.filter(i => i.Status === 'Want to Watch');
 
   // Apply active filter
   if (activeFilter === 'movie')    items = items.filter(i => i.type === 'Movie');
@@ -1019,30 +1019,28 @@ function renderWatchlist() {
 }
 
 function cardHtml(item) {
-  const poster = item.poster_url
-    ? `<img class="card-poster" src="${item.poster_url}" alt="${escHtml(item.title)}" loading="lazy">`
+  const poster = item.Poster
+    ? `<img class="card-poster" src="${item.Poster}" alt="${escHtml(item.Title)}" loading="lazy">`
     : `<div class="card-poster-placeholder">🎬</div>`;
 
-  const streamBadges = (item.streaming || '').split(',').filter(Boolean).map(s =>
+  const streamBadges = (item.StreamingService || '').split(',').filter(Boolean).map(s =>
     `<span class="badge badge-stream">${s.trim()}</span>`).join('');
 
-  const typeBadge = item.type ? `<span class="badge badge-type">${item.type}</span>` : '';
-  const ratingBadge = item.rating ? `<span class="badge badge-rating">⭐ ${item.rating}</span>` : '';
+  const typeBadge   = item.Type   ? `<span class="badge badge-type">${item.Type}</span>`     : '';
+  const ratingBadge = item.Rating ? `<span class="badge badge-rating">⭐ ${item.Rating}</span>` : '';
 
-  const meta = [typeBadge, ratingBadge, streamBadges].filter(Boolean).join('');
-  const desc = item.description ? `<div class="card-desc">${escHtml(item.description)}</div>` : '';
-  const runtime = item.runtime ? `<div style="font-size:11px;color:var(--muted);margin-bottom:4px">${item.runtime}</div>` : '';
+  const meta    = [typeBadge, ratingBadge, streamBadges].filter(Boolean).join('');
+  const runtime = item.Runtime ? `<div style="font-size:11px;color:var(--muted);margin-bottom:4px">${item.Runtime}</div>` : '';
 
   return `<div class="card">
             ${poster}
             <div class="card-body">
-              <div class="card-title">${escHtml(item.title)}</div>
+              <div class="card-title">${escHtml(item.Title)}</div>
               ${meta ? `<div class="card-meta">${meta}</div>` : ''}
               ${runtime}
-              ${desc}
               <div class="card-actions">
-                <button class="btn-vote" onclick="vote('${item.id}',this)">👍 ${item.votes || 0}</button>
-                <button class="btn-icon" onclick="deleteItem('${item.id}')" title="Remove">🗑</button>
+                <button class="btn-vote" onclick="vote('${item.ID}',this)">👍 ${item.Votes || 0}</button>
+                <button class="btn-icon" onclick="deleteItem('${item.ID}')" title="Remove">🗑</button>
               </div>
             </div>
           </div>`;
