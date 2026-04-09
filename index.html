@@ -834,7 +834,7 @@ function buildAddMoodChips() {
 
 function buildAddWhomChips() {
   document.getElementById('whom-chips').innerHTML = FAMILY_MEMBERS.map(m =>
-    `<button class="whom-chip${m === 'Whole Family' ? ' selected' : ''}" onclick="toggleAddWhom(this,'${m}')">${m}</button>`
+    `<button class="whom-chip" onclick="toggleAddWhom(this,'${m}')">${m}</button>`
   ).join('');
 }
 
@@ -850,12 +850,6 @@ function toggleAddWhom(el, name) {
   selectedWhom = selectedWhom.includes(name)
     ? selectedWhom.filter(w => w !== name)
     : [...selectedWhom, name];
-  if (!selectedWhom.length) {
-    selectedWhom = ['Whole Family'];
-    document.querySelectorAll('#whom-chips .whom-chip').forEach(c => {
-      c.classList.toggle('selected', c.textContent === 'Whole Family');
-    });
-  }
 }
 
 // ── Submit new item ───────────────────────────────────────
@@ -864,6 +858,7 @@ async function submitItem() {
     ? tmdbSelected.title
     : document.getElementById('manual-title').value.trim();
   if (!title) { showToast('Please enter a title'); return; }
+  if (!selectedWhom.length) { showToast('Please select who this is for'); return; }
 
   const btn = document.getElementById('btn-add');
   btn.disabled = true; btn.textContent = 'Adding…';
@@ -1140,7 +1135,7 @@ function handleAddOverlayClick(e) {
 function resetAddForm() {
   tmdbSelected  = null;
   selectedMoods = [];
-  selectedWhom  = ['Whole Family'];
+  selectedWhom  = [];
   document.getElementById('tmdb-search').value  = '';
   document.getElementById('manual-title').value = '';
   document.getElementById('field-status').value = 'Want to Watch';
